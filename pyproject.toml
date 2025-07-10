@@ -2,11 +2,14 @@
 name = "bookstore"
 version = "0.1.0"
 description = ""
-authors = ["lcpires7"]
+authors = ["lcpires7 <lcpires7.dev@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.13"
+django = "^5.2.4"
+djangorestframework = "^3.16.0"
+django-extensions = "^4.1"
 
 
 [build-system]
