@@ -1,12 +1,17 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
+from core.models.order import Order
+from core.serializers.order_serializer import OrderSerializer
+from core.permissions import ReadAndPostOnlyForAuthenticatedOrFullAccessForSuperUser
 
-from ..models import Order
-from ..permissions import ReadOnlyForAuthenticatedOrFullAccessForSuperUser
-from ..serializers import OrderSerializer
-
-
-class OrderViewSet(ModelViewSet):
-
+class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
-    permission_classes = [ReadOnlyForAuthenticatedOrFullAccessForSuperUser]
-    queryset = Order.objects.all().order_by("id")
+    permission_classes = [ReadAndPostOnlyForAuthenticatedOrFullAccessForSuperUser]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Order.objects.all()
+        return Order.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

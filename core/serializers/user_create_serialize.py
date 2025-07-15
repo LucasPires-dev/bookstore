@@ -15,6 +15,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
-        user.set_password(validated_data['password'])  # importante para salvar senha criptografada
-        user.save()
+        user.set_password(validated_data['password'])
+        user.save() 
         return user

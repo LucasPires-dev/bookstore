@@ -1,32 +1,40 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
+from core.models.order import Order, OrderItem
+from core.models.product import Product
 
-from ..models import Order
-from ..models import Product
-from .product_serializer import ProductSerializer
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['id', 'title', 'price']
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+    product_id = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(), source='product', write_only=True
+    )
+
+    class Meta:
+        model = OrderItem
+        fields = ['product', 'product_id', 'quantity']
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True, many=True)
-    products_id = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(), write_only=True, many=True
-    )
-    total = serializers.SerializerMethodField()
-
-    def get_total(self, instance):
-        total = sum([product.price for product in instance.product.all()])
-        return total
+    user = serializers.StringRelatedField(read_only=True)
+    items = OrderItemSerializer(source='orderitem_set', many=True)
 
     class Meta:
         model = Order
-        fields = ["product", "total", "user", "products_id"]
-        extra_kwargs = {"product": {"required": False}}
+        fields = ['id', 'order_number', 'user', 'status', 'items', 'created_at', 'updated_at']
+        read_only_fields = ['order_number', 'created_at', 'updated_at']
 
     def create(self, validated_data):
-        product_data = validated_data.pop("products_id")
-        user_data = validated_data.pop("user")
+        items_data = validated_data.pop('orderitem_set')
+        order = Order.objects.create(**validated_data)  # ← Remova o `user=...`
 
-        order = Order.objects.create(user=user_data)
-        for product in product_data:
-            order.product.add(product)
+        for item_data in items_data:
+            OrderItem.objects.create(order=order, **item_data)
 
         return order
