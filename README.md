@@ -99,7 +99,7 @@ poetry run manage.py runserver
 ### Produtos
 
 - `GET /api/products/` - Listar produtos  
-- `POST /api/products/` - Criar produto (somente superusuário)  
+- `POST /api/products/` - Criar produto
 - `GET /api/products/{id}/` - Detalhes produto  
 - `PUT/PATCH /api/products/{id}/` - Atualizar produto (somente superusuário)  
 - `DELETE /api/products/{id}/` - Excluir produto (somente superusuário)  
@@ -107,7 +107,19 @@ poetry run manage.py runserver
 ### Pedidos
 
 - `GET /api/orders/` - Listar pedidos  
-- `POST /api/orders/` - Criar pedido (somente superusuário)  
+- `POST /api/orders/` - Criar pedido
+
+body: 
+```bash
+{
+    "status": "status_do_pedido",
+    "items": [
+    {"product_id": "id_do_produto1", "quantity": "quantidade_do_produto1"},
+    {"product_id": "id_do_produto2", "quantity": "quantidade_do_produto2"},
+    ]
+}
+```
+
 - `GET /api/orders/{id}/` - Detalhes pedido  
 - `PUT/PATCH /api/orders/{id}/` - Atualizar pedido (somente superusuário)  
 - `DELETE /api/orders/{id}/` - Excluir pedido (somente superusuário)  
