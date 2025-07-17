@@ -1,11 +1,10 @@
 #!/bin/sh
 
-echo "Aguardando o banco de dados iniciar..."
+echo "Aguardando o banco de dados aceitar conexões..."
 
-while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
+until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER > /dev/null 2>&1; do
   sleep 1
 done
 
-echo "Banco de dados iniciado!"
+echo "Banco de dados está pronto para receber conexões!"
 
-exec "$@"

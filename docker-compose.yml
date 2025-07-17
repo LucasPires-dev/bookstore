@@ -1,17 +1,6 @@
-version: "3.9"
+version: '3.9'
 
 services:
-  web:
-    build: .
-    env_file:
-      - .env
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    networks:
-      - backend
-
   db:
     image: postgres:17
     env_file:
@@ -24,6 +13,30 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - backend
+
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+      - ./init-db/backup.dump:/app/backup.dump   # Monta o backup no container
+    networks:
+      - backend
+    command: >
+      sh -c "
+        ./wait-for-postgres.sh &&
+        poetry run python manage.py migrate --noinput &&
+        ./restore-db.sh &&
+        poetry run python manage.py runserver 0.0.0.0:8000
+      "
+
+
+
 
 volumes:
   postgres_data:
