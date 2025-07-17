@@ -40,13 +40,13 @@ poetry shell
 5. Rode as migrações:
 
 ```bash
-python manage.py migrate
+poetry run manage.py migrate
 ```
 
 6. Inicie o servidor de desenvolvimento:
 
 ```bash
-python manage.py runserver
+poetry run manage.py runserver
 ```
 
 ## Endpoints Principais
@@ -88,18 +88,18 @@ python manage.py runserver
   }
   ```
 
-### Categorias
+<!-- ### Categorias
 
 - `GET /api/categories/` - Listar categorias  
 - `POST /api/categories/` - Criar categoria (somente superusuário)  
 - `GET /api/categories/{id}/` - Detalhes categoria  
 - `PUT/PATCH /api/categories/{id}/` - Atualizar categoria (somente superusuário)  
-- `DELETE /api/categories/{id}/` - Excluir categoria (somente superusuário)  
+- `DELETE /api/categories/{id}/` - Excluir categoria (somente superusuário)   -->
 
 ### Produtos
 
 - `GET /api/products/` - Listar produtos  
-- `POST /api/products/` - Criar produto (somente superusuário)  
+- `POST /api/products/` - Criar produto
 - `GET /api/products/{id}/` - Detalhes produto  
 - `PUT/PATCH /api/products/{id}/` - Atualizar produto (somente superusuário)  
 - `DELETE /api/products/{id}/` - Excluir produto (somente superusuário)  
@@ -132,8 +132,8 @@ Para endpoints protegidos, envie o token no header da requisição:
 Authorization: Token seu_token_aqui
 ```
 
-Usuários autenticados podem apenas ler dados (GET).  
-Somente superusuários podem criar, editar ou excluir.
+Usuários autenticados podem apenas ler dados (GET) e eviar Pedidos (POST).  
+Somente superusuários podem criar, editar ou excluir Produtos.
 
 ## Testando com Postman
 
