@@ -28,25 +28,28 @@ curl -sSL https://install.python-poetry.org | python3 -
 3. Instale as dependências e crie o ambiente virtual com Poetry:
 
 ```bash
-poetry install
+poetry install --no-root
 ```
 
-4. Ative o ambiente virtual criado pelo Poetry:
+4. Permita a execução dos scripts de espera do postgres (wait-for-postgres.sh) e do que populará seu banco com dados (restore-db.sh):
 
 ```bash
-poetry shell
+dos2unix scripts/*.sh        # Corrige os finais de linha se necessário
+chmod +x scripts/*.sh        # Dá permissão de execução
+
+
 ```
 
 5. Rode as migrações:
 
 ```bash
-poetry run manage.py migrate
+poetry run python manage.py migrate
 ```
 
 6. Inicie o servidor de desenvolvimento:
 
 ```bash
-poetry run manage.py runserver
+poetry run python manage.py runserver
 ```
 
 ## Endpoints Principais
