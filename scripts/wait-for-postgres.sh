@@ -7,4 +7,3 @@ until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER > /dev/nu
 done
 
 echo "Banco de dados está pronto para receber conexões!"
-
