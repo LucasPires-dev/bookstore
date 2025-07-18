@@ -40,16 +40,10 @@ chmod +x scripts/*.sh        # Dá permissão de execução
 
 ```
 
-5. Rode as migrações:
+5. Crie e execulte os containers da aplicação:
 
 ```bash
-poetry run python manage.py migrate
-```
-
-6. Inicie o servidor de desenvolvimento:
-
-```bash
-poetry run python manage.py runserver
+docker compose up --build
 ```
 
 ## Endpoints Principais
